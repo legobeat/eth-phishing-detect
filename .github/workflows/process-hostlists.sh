@@ -11,8 +11,8 @@ process_list blacklist
 process_list fuzzylist
 
 export _branch=ci-merge-$(git rev-parse --short HEAD)
-git diff src/config.json \
-    && git checkout -b develop --track origin/develop #\
+#git diff src/config.json \
+#    && git checkout -b develop --track origin/develop #\
 #    && git add src/config.json \
 #    && git rm ADD_HOSTS_HERE/*/* \
 #    && git commit -m 'update hostlists' \
