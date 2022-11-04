@@ -1,0 +1,39 @@
+name: Validate and merge hostnames
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  build-test:
+    name: hostnames
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x, 19.x]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version-file: "./.nvmrc"
+    - run: yarn --frozen-lockfile
+    - run: |
+        process_list() {
+          _list=$1
+          git show ADD_HOSTS_HERE/$_list >/dev/null || return
+          node src/add-hosts.js $_list $(git show --name-only --oneline ADD_HOSTS_HERE/$_list/ | tail -n +2 | xargs -r cat)
+        }
+        process_list whitelist
+        process_list blacklist
+        process_list fuzzylist
+        git diff ADD_HOSTS_HERE/*/ && git add ADD_HOSTS_HERE && git commit -m 'update hostlists'
+
+  all-jobs-pass:
+    name: All jobs pass
+    runs-on: ubuntu-20.04
+    needs:
+      - build-test
+    steps:
+    - run: echo "Great success!"
