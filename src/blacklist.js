@@ -1,17 +1,4 @@
-const fs = require("fs");
-const config = require("./config");
+#!/usr/bin/env node
+const addDomains = require("./add-domains");
 
-const domains = process.argv.slice(2);
-domains.forEach(domain => {
-  config.blacklist.unshift(domain);
-});
-
-// Nicely pad the file
-let output = JSON.stringify(config, null, 2);
-output += "\n";
-
-fs.writeFile("./src/config.json", output, (err) => {
-  if (err) {
-    return console.log(err);
-  }
-});
+addDomains('blacklist', process.argv.slice(2), "./src/config.json");
