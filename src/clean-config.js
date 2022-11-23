@@ -27,16 +27,31 @@ if (!section) {
   exitWithUsage(1);
 }
 
-const redundancies = listName === 'blocklist'
+const redundancyMatches = listName === 'blocklist'
   ? config.blacklist.map(h =>
+  //? config.blacklist.filter(h => h === 'fulcrum.plus').map(h =>
       [h, (new PhishingDetector(removeHostFromConfig(config, 'blacklist', h))).check(h)])
     .filter(([_, r]) => r.result)
-    .map(([h]) => h)
   : config.whitelist.map(h =>
       [h, (new PhishingDetector(removeHostFromConfig(config, 'whitelist', h))).check(h)])
     .filter(([_, r]) => !r.result)
-    .map(([h]) => h)
 
+// don't remove entries that are relied on by others
+const redundancies = redundancyMatches.filter(([h, _]) =>
+    !redundancyMatches.some(([mh, mr]) => mh !== h && mr.match === h))
+    .map(([h]) => h);
 const cleanConfig = redundancies.reduce((cfg, h) => removeHostFromConfig(cfg, section, h), config);
+
+// Just in case we remove too much: see if any hosts can be added back after removing all
+if (listName === 'blocklist') {
+  let detector = new PhishingDetector(cleanConfig);
+  for (const h of redundancies) {
+    const r = detector.check(h);
+    if (!r.result) {
+      cleanConfig.blacklist.push(h);
+      detector = new PhishingDetector(cleanConfig);
+    }
+  }
+}
 
 process.stdout.write(JSON.stringify(cleanConfig, undefined, 2));
