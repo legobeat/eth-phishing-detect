@@ -47,7 +47,6 @@ function startTests () {
     // blacklist
 
     testBlacklist(t, [
-      "metamask.com",
       "wallet-ethereum.net",
       "etherclassicwallet.com",
       "wallet-ethereum.net." //Test for absolute fully-qualified domain name
@@ -71,6 +70,7 @@ function startTests () {
     // fuzzy
 
     testFuzzylist(t, [
+      "metamask.com",
       "metmask.io",
       "myetherwallet.cx",
       "myetherwallet.aaa",
@@ -399,7 +399,6 @@ function startTests () {
     // blacklist
 
     testBlacklist(t, [
-      "metamask.com",
       "wallet-ethereum.net",
       "etherclassicwallet.com",
       "wallet-ethereum.net." //Test for absolute fully-qualified domain name
@@ -423,6 +422,7 @@ function startTests () {
     // fuzzy
 
     testFuzzylist(t, [
+      "metamask.com",
       "metmask.io",
       "myetherwallet.cx",
       "myetherwallet.aaa",
