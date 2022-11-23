@@ -13,6 +13,7 @@ const exitWithUsage = (exitCode) => {
   } ${
     Object.keys(SECTION_KEYS).join('|')
   }`);
+  console.out('Removes redundant entries from config section and writes result to standard output');
   process.exit(exitCode);
 };
 
@@ -39,34 +40,3 @@ const redundancies = listName === 'blocklist'
 const cleanConfig = redundancies.reduce((cfg, h) => removeHostFromConfig(cfg, section, h), config);
 
 process.stdout.write(JSON.stringify(cleanConfig, undefined, 2));
-
-/*
-const args = {
-  jsonOut: process.argv[2] === '-j'
-};
-
-try {
-  for (const host of config.blacklist.sort()) {
-    const cfg = removeHostFromConfig('blacklist', host);
-    const detector = new PhishingDetector(cfg);
-    const r = detector.check(host);
-    if (r.result) {
-    }
-  }
-  for (const host of config.whitelist.sort()) {
-    const cfg = removeHostFromConfig('blacklist', host);
-    const detector = new PhishingDetector(cfg);
-    const r = detector.check(h);
-    if (r.result) {
-      delete r.result;
-      console.error(args.jsonOut
-        ? JSON.stringify({host, ...r})
-        : `'${host}' does not require allowlisting`
-      )
-    }
-  }
-} finally {
-  this.config = config;
-}
-*/
-
