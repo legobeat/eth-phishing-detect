@@ -81,13 +81,19 @@ class PhishingDetector {
     for (const { allowlist, name, version } of this.configs) {
       // if source matches whitelist domain (or subdomain thereof), PASS
       const whitelistMatch = matchPartsAgainstList(source, allowlist)
-      if (whitelistMatch) return { name, result: false, type: 'allowlist', version }
+      if (whitelistMatch) {
+        const match = domainPartsToDomain(whitelistMatch);
+        return { match, name, result: false, type: 'allowlist', version }
+      }
     }
 
     for (const { blocklist, fuzzylist, name, tolerance, version } of this.configs) {
       // if source matches blacklist domain (or subdomain thereof), FAIL
       const blacklistMatch = matchPartsAgainstList(source, blocklist)
-      if (blacklistMatch) return { name, result: true, type: 'blocklist', version }
+      if (blacklistMatch) {
+        const match = domainPartsToDomain(blacklistMatch);
+        return { match, name, result: true, type: 'blocklist', version }
+      }
 
       if (tolerance > 0) {
         // check if near-match of whitelist domain, FAIL
@@ -175,11 +181,12 @@ function domainPartsToFuzzyForm(domainParts) {
 }
 
 // match the target parts, ignoring extra subdomains on source
+// returns parts for first found matching entry
 //   source: [io, metamask, xyz]
 //   target: [io, metamask]
 //   result: PASS
 function matchPartsAgainstList(source, list) {
-  return list.some((target) => {
+  return list.find((target) => {
     // target domain has more parts than source, fail
     if (target.length > source.length) return false
     // source matches target or (is deeper subdomain)
