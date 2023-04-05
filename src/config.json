@@ -12,6 +12,7 @@
     "satoshilabs.com"
   ],
   "whitelist": [
+    "exampleetherscam.wtf",
     "etherscam.wtf",
     "metamick.online",
     "osense.ai",
@@ -513,6 +514,7 @@
     "launchpad.ethereum.org"
   ],
   "blacklist": [
+    "exampleetherscam.wtf",
     "mask-tokens.io",
     "ether.scc-defi.com",
     "zksync-2023.com",
@@ -42000,6 +42002,8 @@
     "arbitrumcrypto.net",
     "arbitrumgift.live",
     "bridga-orbitrom.com",
-    "walleet-trezorr.com"
+    "walleet-trezorr.com",
+    "exampleetherscam.wtf",
+    "bridga-orbitrom.com"
   ]
 }
