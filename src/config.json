@@ -513,6 +513,7 @@
     "launchpad.ethereum.org"
   ],
   "blacklist": [
+    "dyno.lc",
     "raidprotection.xyz",
     "owl-verification.netlify.app",
     "vulcanweb3.com",
