@@ -44110,6 +44110,8 @@
     "zksyncswap.network",
     "zksyncswap.guru",
     "zksyncswap.party",
+    "example.com",
+    "foo.example.com",
     "arbitrum-foundation.biz"
   ]
 }
